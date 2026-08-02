@@ -157,6 +157,17 @@
             box-shadow: 0 0 12px rgba(168, 50, 50, 0.5);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #2e8b57, #1e5a38);
+            color: #fff;
+            border-color: #3cb371;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(135deg, #3cb371, #2e8b57);
+            box-shadow: 0 0 12px rgba(46, 139, 87, 0.5);
+        }
+
         .btn-secondary {
             background: var(--bg-tertiary);
             color: var(--text-primary);
@@ -665,6 +676,128 @@
             background-color: rgba(229, 185, 103, 0.08);
         }
 
+        /* Modal styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 550px;
+            padding: 2rem;
+            box-shadow: var(--shadow-elevation);
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .modal-title {
+            font-family: var(--font-title);
+            font-size: 1.35rem;
+            color: var(--accent-gold);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-gold);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .form-help {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        .status-alert {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .status-alert.info { background: var(--bg-tertiary); color: var(--accent-gold-bright); border: 1px solid var(--border-gold); }
+        .status-alert.success { background: rgba(46, 139, 87, 0.2); color: #4ade80; border: 1px solid #2e8b57; }
+        .status-alert.error { background: rgba(168, 50, 50, 0.2); color: #f87171; border: 1px solid #a83232; }
+
+        .target-preview-badge {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.82rem;
+            color: var(--accent-gold);
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        /* Encryptor Helper Tool */
+        .enc-box {
+            background: var(--bg-tertiary);
+            border: 1px dashed var(--border-gold);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: left;
+        }
+
         /* Print CSS for Clean PDF Rendering */
         @media print {
             @page {
@@ -680,7 +813,7 @@
                 print-color-adjust: exact !important;
             }
 
-            #app-sidebar, .topbar, .permalink, .dropzone-wrapper {
+            #app-sidebar, .topbar, .permalink, .dropzone-wrapper, .modal-overlay {
                 display: none !important;
             }
 
@@ -726,6 +859,9 @@
             </button>
             <button class="btn btn-primary" id="btn-export-html" onclick="exportHTML()" disabled title="Descargar como Handbook HTML autónomo">
                 <span>⚡ Descargar Handbook HTML</span>
+            </button>
+            <button class="btn btn-success" id="btn-publish-gh" onclick="openPublishModal()" disabled title="Publicar automáticamente el handbook a la Web">
+                <span>🚀 Publicar a la Web</span>
             </button>
             <button class="btn btn-secondary" id="btn-print-pdf" onclick="window.print()" disabled title="Imprimir o guardar como PDF">
                 <span>🖨️ Imprimir / PDF</span>
@@ -788,7 +924,90 @@
         </div>
     </div>
 
+    <!-- Modal for GitHub Publishing -->
+    <div class="modal-overlay" id="publish-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">🚀 Publicar Handbook a la Web</h3>
+                <button class="modal-close" onclick="closePublishModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="target-preview-badge">
+                    📍 <strong>Destino:</strong> <span id="target-web-label">https://BladerX.github.io/karioz-handbook/</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">🔑 Clave Secreta de Publicación</label>
+                    <input type="password" class="form-input" id="gh-passcode" placeholder="Ingresa la clave que te dio tu amigo...">
+                    <div class="form-help">La clave descifra en memoria tu Token de GitHub de forma 100% segura (AES-256).</div>
+                </div>
+
+                <!-- Advanced Settings & Token Encryptor Accordion -->
+                <div style="margin-top: 1rem; text-align: left; display: flex; justify-content: space-between;">
+                    <a href="#" onclick="toggleAdvancedSettings(event)" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: underline;">⚙️ Opciones avanzadas</a>
+                    <a href="#" onclick="toggleEncryptorBox(event)" style="font-size: 0.8rem; color: var(--accent-gold); text-decoration: underline;">🔐 Generador de Token Cifrado</a>
+                </div>
+
+                <!-- Encryptor Helper Tool (Only for the repository owner) -->
+                <div class="enc-box" id="encryptor-box" style="display: none;">
+                    <h4 style="font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 0.5rem;">🔐 Generar Token Cifrado con AES-256</h4>
+                    <div class="form-group">
+                        <label class="form-label">Tu Token de GitHub (ghp_...)</label>
+                        <input type="password" class="form-input" id="enc-raw-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Clave Secreta elegida para tu amigo</label>
+                        <input type="text" class="form-input" id="enc-secret-pass" placeholder="ej: karioz123">
+                    </div>
+                    <button class="btn btn-outline" onclick="generateEncryptedTokenFromUI()" style="width: 100%; justify-content: center;">
+                        🔒 Cifrar Token Ahora
+                    </button>
+                    <div class="form-group" style="margin-top: 0.75rem;">
+                        <label class="form-label">Token Cifrado resultante (Pega este en CONFIG_PUBLICACION.encryptedToken):</label>
+                        <textarea class="form-input" id="enc-result-text" rows="3" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings Box -->
+                <div id="advanced-settings-box" style="display: none; margin-top: 1rem; border-top: 1px dashed var(--border-color); padding-top: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Usuario / Organización de GitHub</label>
+                        <input type="text" class="form-input" id="gh-owner">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre del Repositorio</label>
+                        <input type="text" class="form-input" id="gh-repo">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nombre del archivo</label>
+                        <input type="text" class="form-input" id="gh-path" value="index.html">
+                    </div>
+                </div>
+
+                <div class="status-alert" id="gh-status"></div>
+
+                <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
+                    <button class="btn btn-secondary" onclick="closePublishModal()">Cancelar</button>
+                    <button class="btn btn-success" id="btn-do-publish" onclick="publishToGitHub()">🚀 Publicar Ahora</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // =========================================================================
+        // CONFIGURACIÓN POR DEFECTO CON TOKEN CIFRADO SEGURA (AES-256-GCM)
+        // =========================================================================
+        const CONFIG_PUBLICACION = {
+            owner: "BladerX",                   // Tu usuario de GitHub
+            repo: "karioz-handbook",             // Nombre de tu repositorio
+            path: "index.html",                  // Archivo que se actualizará en GitHub Pages
+            
+            // Pega aquí el Token Cifrado generado con la herramienta integrada
+            encryptedToken: ""                  // String cifrado (ej: "U2FsdGVkX1...")
+        };
+        // =========================================================================
+
         // Icons mapping for chapters
         const CHAPTER_ICONS = {
             "Reglas de Juego": "📜",
@@ -803,7 +1022,6 @@
 
         // State variables
         let loadedChapters = [];
-        let rawFilesData = [];
 
         // Drag and Drop Event Listeners
         const dropBox = document.getElementById('drop-box');
@@ -1020,6 +1238,7 @@
             document.getElementById('btn-new-json').style.display = 'inline-flex';
             document.getElementById('btn-export-md').disabled = false;
             document.getElementById('btn-export-html').disabled = false;
+            document.getElementById('btn-publish-gh').disabled = false;
             document.getElementById('btn-print-pdf').disabled = false;
 
             // Intersection Observer for scroll spy in sidebar
@@ -1107,18 +1326,19 @@
             document.getElementById('btn-new-json').style.display = 'none';
             document.getElementById('btn-export-md').disabled = true;
             document.getElementById('btn-export-html').disabled = true;
+            document.getElementById('btn-publish-gh').disabled = true;
             document.getElementById('btn-print-pdf').disabled = true;
             document.getElementById('file-input').value = '';
         }
 
-        // --- Export Functions ---
-        function exportHTML() {
-            if (loadedChapters.length === 0) return;
+        // --- Export & Publishing Functions ---
+        function generateCompiledHTML() {
+            if (loadedChapters.length === 0) return "";
 
             const mainContent = document.getElementById('content-container').innerHTML;
             const sidebarNav = document.getElementById('sidebar-nav').innerHTML;
 
-            const fullPageHTML = `<!DOCTYPE html>
+            return `<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -1163,7 +1383,11 @@
     <\/script>
 </body>
 </html>`;
+        }
 
+        function exportHTML() {
+            const fullPageHTML = generateCompiledHTML();
+            if (!fullPageHTML) return;
             downloadBlob(fullPageHTML, 'Karioz_Handbook_Compilado.html', 'text/html');
         }
 
@@ -1200,7 +1424,6 @@
             let temp = document.createElement('div');
             temp.innerHTML = html;
 
-            // Replace headings
             for (let i = 6; i >= 1; i--) {
                 temp.querySelectorAll('h' + i).forEach(h => {
                     const hashes = '#'.repeat(Math.min(i + 2, 6));
@@ -1208,12 +1431,10 @@
                 });
             }
 
-            // Replace HR
             temp.querySelectorAll('hr').forEach(hr => {
                 hr.replaceWith('\n\n---\n\n');
             });
 
-            // Replace strong / em
             temp.querySelectorAll('strong, b').forEach(s => {
                 s.replaceWith(' **' + s.textContent.trim() + '** ');
             });
@@ -1221,7 +1442,6 @@
                 e.replaceWith(' *' + e.textContent.trim() + '* ');
             });
 
-            // Replace lists
             temp.querySelectorAll('ul').forEach(ul => {
                 let items = [];
                 ul.querySelectorAll('li').forEach(li => {
@@ -1238,7 +1458,6 @@
                 ol.replaceWith('\n\n' + items.join('\n') + '\n\n');
             });
 
-            // Replace paragraph
             temp.querySelectorAll('p').forEach(p => {
                 p.replaceWith('\n\n' + p.textContent.trim() + '\n\n');
             });
@@ -1258,6 +1477,233 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+        }
+
+        // =========================================================================
+        // WEB CRYPTO API (AES-256-GCM + PBKDF2) ENCRYPTION / DECRYPTION LOGIC
+        // =========================================================================
+
+        async function deriveKey(password, salt) {
+            const enc = new TextEncoder();
+            const keyMaterial = await crypto.subtle.importKey(
+                "raw",
+                enc.encode(password),
+                { name: "PBKDF2" },
+                false,
+                ["deriveKey"]
+            );
+            return await crypto.subtle.deriveKey(
+                {
+                    name: "PBKDF2",
+                    salt: salt,
+                    iterations: 100000,
+                    hash: "SHA-256"
+                },
+                keyMaterial,
+                { name: "AES-GCM", length: 256 },
+                false,
+                ["encrypt", "decrypt"]
+            );
+        }
+
+        async function encryptTokenAES(rawToken, password) {
+            const enc = new TextEncoder();
+            const salt = crypto.getRandomValues(new Uint8Array(16));
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const key = await deriveKey(password, salt);
+            
+            const encryptedBuffer = await crypto.subtle.encrypt(
+                { name: "AES-GCM", iv: iv },
+                key,
+                enc.encode(rawToken)
+            );
+
+            const combined = new Uint8Array(salt.length + iv.length + encryptedBuffer.byteLength);
+            combined.set(salt, 0);
+            combined.set(iv, salt.length);
+            combined.set(new Uint8Array(encryptedBuffer), salt.length + iv.length);
+
+            return btoa(String.fromCharCode(...combined));
+        }
+
+        async function decryptTokenAES(encryptedBase64, password) {
+            const binary = atob(encryptedBase64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {
+                bytes[i] = binary.charCodeAt(i);
+            }
+
+            const salt = bytes.slice(0, 16);
+            const iv = bytes.slice(16, 28);
+            const ciphertext = bytes.slice(28);
+
+            const key = await deriveKey(password, salt);
+            const decryptedBuffer = await crypto.subtle.decrypt(
+                { name: "AES-GCM", iv: iv },
+                key,
+                ciphertext
+            );
+
+            const dec = new TextDecoder();
+            return dec.decode(decryptedBuffer);
+        }
+
+        async function generateEncryptedTokenFromUI() {
+            const rawToken = document.getElementById('enc-raw-token').value.trim();
+            const pass = document.getElementById('enc-secret-pass').value.trim();
+            const resArea = document.getElementById('enc-result-text');
+
+            if (!rawToken || !pass) {
+                alert('Por favor ingresa tu Token de GitHub y la Clave Secreta elegida.');
+                return;
+            }
+
+            try {
+                const encrypted = await encryptTokenAES(rawToken, pass);
+                resArea.value = encrypted;
+                alert('¡Token cifrado con éxito! Copia el resultado y pégalo en CONFIG_PUBLICACION.encryptedToken');
+            } catch (e) {
+                alert('Error al cifrar: ' + e.message);
+            }
+        }
+
+        // --- GitHub Publishing Logic ---
+        function openPublishModal() {
+            const owner = CONFIG_PUBLICACION.owner || 'BladerX';
+            const repo = CONFIG_PUBLICACION.repo || 'karioz-handbook';
+            const path = CONFIG_PUBLICACION.path || 'index.html';
+
+            document.getElementById('gh-owner').value = owner;
+            document.getElementById('gh-repo').value = repo;
+            document.getElementById('gh-path').value = path;
+
+            const targetURL = `https://${owner}.github.io/${repo}/`;
+            document.getElementById('target-web-label').innerText = targetURL;
+
+            document.getElementById('gh-status').style.display = 'none';
+            document.getElementById('publish-modal').classList.add('active');
+        }
+
+        function closePublishModal() {
+            document.getElementById('publish-modal').classList.remove('active');
+        }
+
+        function toggleAdvancedSettings(e) {
+            e.preventDefault();
+            const box = document.getElementById('advanced-settings-box');
+            box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function toggleEncryptorBox(e) {
+            e.preventDefault();
+            const box = document.getElementById('encryptor-box');
+            box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+        }
+
+        async function publishToGitHub() {
+            const enteredPasscode = document.getElementById('gh-passcode').value.trim();
+            const statusEl = document.getElementById('gh-status');
+            const btnDoPublish = document.getElementById('btn-do-publish');
+
+            let owner = document.getElementById('gh-owner').value.trim() || CONFIG_PUBLICACION.owner;
+            let repo = document.getElementById('gh-repo').value.trim() || CONFIG_PUBLICACION.repo;
+            let path = document.getElementById('gh-path').value.trim() || CONFIG_PUBLICACION.path;
+
+            if (!enteredPasscode) {
+                showStatus('Por favor ingresa la clave de publicación.', 'error');
+                return;
+            }
+
+            btnDoPublish.disabled = true;
+            showStatus('⏳ Descifrando token y validando clave...', 'info');
+
+            let decryptedToken = null;
+
+            try {
+                // If direct raw token entered in passcode field (fallback for owner)
+                if (enteredPasscode.startsWith('ghp_') || enteredPasscode.startsWith('github_pat_')) {
+                    decryptedToken = enteredPasscode;
+                } else if (CONFIG_PUBLICACION.encryptedToken) {
+                    // Decrypt token with user-entered passcode via AES-256-GCM + PBKDF2
+                    decryptedToken = await decryptTokenAES(CONFIG_PUBLICACION.encryptedToken, enteredPasscode);
+                } else {
+                    showStatus('❌ Error: No se ha configurado un token cifrado en CONFIG_PUBLICACION.encryptedToken.', 'error');
+                    btnDoPublish.disabled = false;
+                    return;
+                }
+            } catch (err) {
+                showStatus('❌ Clave de acceso incorrecta. El token no pudo ser descifrado.', 'error');
+                btnDoPublish.disabled = false;
+                return;
+            }
+
+            showStatus('⏳ Conectando con GitHub API para publicar cambios...', 'info');
+
+            try {
+                const contentHTML = generateCompiledHTML();
+                if (!contentHTML) {
+                    showStatus('Error: No hay datos procesados para publicar.', 'error');
+                    btnDoPublish.disabled = false;
+                    return;
+                }
+
+                // Safely UTF-8 encode to Base64
+                const encoder = new TextEncoder();
+                const data = encoder.encode(contentHTML);
+                let binary = '';
+                for (let i = 0; i < data.byteLength; i++) {
+                    binary += String.fromCharCode(data[i]);
+                }
+                const base64Content = btoa(binary);
+
+                // 1. Get SHA if file exists
+                let sha = null;
+                const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                    headers: {
+                        'Authorization': `Bearer ${decryptedToken}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (getRes.ok) {
+                    const getJson = await getRes.json();
+                    sha = getJson.sha;
+                }
+
+                // 2. Put / Commit updated file
+                const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${decryptedToken}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'Actualizar Karioz Handbook compilado via Compilador Web',
+                        content: base64Content,
+                        sha: sha ? sha : undefined
+                    })
+                });
+
+                if (putRes.ok) {
+                    const siteURL = `https://${owner}.github.io/${repo}/`;
+                    showStatus(`✅ ¡Handbook publicado con éxito!<br>Tu web estará actualizada en unos segundos en:<br><a href="${siteURL}" target="_blank" style="color: #4ade80; font-weight: bold; text-decoration: underline;">${siteURL}</a>`, 'success');
+                } else {
+                    const errData = await putRes.json();
+                    showStatus(`❌ Error de GitHub (${putRes.status}): ${errData.message || 'No se pudo publicar'}`, 'error');
+                }
+            } catch (err) {
+                showStatus(`❌ Error de conexión: ${err.message}`, 'error');
+            } finally {
+                btnDoPublish.disabled = false;
+            }
+        }
+
+        function showStatus(msg, type) {
+            const el = document.getElementById('gh-status');
+            el.className = `status-alert ${type}`;
+            el.innerHTML = msg;
+            el.style.display = 'block';
         }
     </script>
 </body>
