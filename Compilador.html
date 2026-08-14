@@ -848,8 +848,8 @@
             <span class="handbook-title-header">Karioz Handbook Compiler</span>
         </div>
         <div class="topbar-actions">
-            <button class="btn btn-secondary" id="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar Tema (Oscuro / Pergamino)">
-                <span>🎨 Tema</span>
+            <button class="btn btn-secondary" id="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar a Modo Pergamino / Modo Oscuro">
+                <span>📜 Modo Pergamino</span>
             </button>
             <button class="btn btn-secondary" id="btn-new-json" onclick="resetApp()" style="display:none;" title="Cargar otros archivos JSON">
                 <span>📁 Cargar JSON</span>
@@ -862,9 +862,6 @@
             </button>
             <button class="btn btn-success" id="btn-publish-gh" onclick="openPublishModal()" disabled title="Publicar automáticamente el handbook a la Web">
                 <span>🚀 Publicar a la Web</span>
-            </button>
-            <button class="btn btn-secondary" id="btn-print-pdf" onclick="window.print()" disabled title="Imprimir o guardar como PDF">
-                <span>🖨️ Imprimir / PDF</span>
             </button>
         </div>
     </header>
@@ -1239,7 +1236,6 @@
             document.getElementById('btn-export-md').disabled = false;
             document.getElementById('btn-export-html').disabled = false;
             document.getElementById('btn-publish-gh').disabled = false;
-            document.getElementById('btn-print-pdf').disabled = false;
 
             // Intersection Observer for scroll spy in sidebar
             setupScrollSpy();
@@ -1327,7 +1323,6 @@
             document.getElementById('btn-export-md').disabled = true;
             document.getElementById('btn-export-html').disabled = true;
             document.getElementById('btn-publish-gh').disabled = true;
-            document.getElementById('btn-print-pdf').disabled = true;
             document.getElementById('file-input').value = '';
         }
 
@@ -1352,16 +1347,36 @@
     </style>
 </head>
 <body>
+    <!-- Top Navigation Header -->
+    <header class="topbar">
+        <div class="topbar-branding">
+            <span class="brand-icon">⚔️</span>
+            <span class="handbook-title-header">Karioz Handbook</span>
+        </div>
+        <div class="topbar-actions">
+            <button class="btn btn-secondary" onclick="toggleTheme()" title="Cambiar a Modo Pergamino / Modo Oscuro">
+                <span>📜 Modo Pergamino</span>
+            </button>
+        </div>
+    </header>
+
     <div class="app-layout">
         <div class="workspace-view active">
             <aside id="app-sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-brand">KARIOZ HANDBOOK</div>
                     <div class="sidebar-subtitle">Manual de Reglas</div>
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="search-input" placeholder="Buscar regla o página..." oninput="filterNavigation()">
+                    </div>
                 </div>
-                <nav class="sidebar-nav">
+                <nav class="sidebar-nav" id="sidebar-nav">
                     ${sidebarNav}
                 </nav>
+                <div class="sidebar-footer">
+                    <span>Karioz TTRPG System &bull; Handbook</span>
+                </div>
             </aside>
             <main id="app-main">
                 <div class="content-container">
@@ -1375,11 +1390,76 @@
             const grp = document.querySelector('.nav-chapter-group[data-chapter-id="' + id + '"]');
             if (grp) grp.classList.toggle('collapsed');
         }
+
         function onNavClick(e, id) {
             e.preventDefault();
             const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+                history.pushState(null, null, '#' + id);
+            }
         }
+
+        function filterNavigation() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const pageLinks = document.querySelectorAll('.nav-page-item');
+            const chapterGroups = document.querySelectorAll('.nav-chapter-group');
+
+            pageLinks.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            chapterGroups.forEach(group => {
+                const visiblePages = group.querySelectorAll('.nav-page-item[style="display: block;"]');
+                if (visiblePages.length > 0 || query === '') {
+                    group.style.display = 'block';
+                    if (query !== '') {
+                        group.classList.remove('collapsed');
+                    }
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'parchment') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'parchment');
+            }
+        }
+
+        function setupScrollSpy() {
+            const articles = document.querySelectorAll('.page-article');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('data-page-id') === id) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            articles.forEach(article => observer.observe(article));
+        }
+
+        document.addEventListener('DOMContentLoaded', setupScrollSpy);
+        setupScrollSpy();
     <\/script>
 </body>
 </html>`;

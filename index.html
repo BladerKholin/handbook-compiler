@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Karioz Handbook - Compilador de JSON</title>
-    <meta name="description"
-        content="Herramienta interactiva para convertir y compilar JSONs de Foundry VTT a Handbook HTML y Markdown.">
-
+    <meta name="description" content="Herramienta interactiva para convertir y compilar JSONs de Foundry VTT a Handbook HTML y Markdown.">
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -38,7 +34,7 @@
             --font-reading: 'Crimson Pro', serif;
             --sidebar-width: 320px;
             --topbar-height: 64px;
-            --shadow-elevation: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --shadow-elevation: 0 10px 30px rgba(0,0,0,0.5);
             --radius-sm: 6px;
             --radius-md: 10px;
             --radius-lg: 16px;
@@ -236,8 +232,7 @@
             position: relative;
         }
 
-        .drop-box:hover,
-        .drop-box.drag-over {
+        .drop-box:hover, .drop-box.drag-over {
             background-color: rgba(229, 185, 103, 0.1);
             border-color: var(--accent-gold-bright);
             transform: scale(1.01);
@@ -432,7 +427,7 @@
 
         .nav-link:hover {
             color: var(--text-primary);
-            background-color: rgba(255, 255, 255, 0.03);
+            background-color: rgba(255,255,255,0.03);
         }
 
         .nav-link.active {
@@ -502,7 +497,7 @@
             font-weight: 900;
             color: var(--accent-gold);
             letter-spacing: 1px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
         .chapter-divider {
@@ -514,8 +509,7 @@
             font-size: 1.2rem;
         }
 
-        .chapter-divider::before,
-        .chapter-divider::after {
+        .chapter-divider::before, .chapter-divider::after {
             content: '';
             height: 1px;
             width: 80px;
@@ -529,7 +523,7 @@
             border-radius: var(--radius-md);
             padding: 2rem 2.25rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
             scroll-margin-top: calc(var(--topbar-height) + 1.5rem);
             transition: border-color 0.2s ease;
         }
@@ -580,12 +574,7 @@
             color: var(--text-primary);
         }
 
-        .page-body h1,
-        .page-body h2,
-        .page-body h3,
-        .page-body h4,
-        .page-body h5,
-        .page-body h6 {
+        .page-body h1, .page-body h2, .page-body h3, .page-body h4, .page-body h5, .page-body h6 {
             font-family: var(--font-title);
             color: var(--accent-gold);
             margin-top: 1.75rem;
@@ -593,30 +582,12 @@
             line-height: 1.3;
         }
 
-        .page-body h1 {
-            font-size: 1.75rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.4rem;
-        }
+        .page-body h1 { font-size: 1.75rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem; }
+        .page-body h2 { font-size: 1.4rem; }
+        .page-body h3 { font-size: 1.2rem; color: #f0c674; }
+        .page-body h4 { font-size: 1.05rem; color: var(--accent-gold-bright); text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .page-body h2 {
-            font-size: 1.4rem;
-        }
-
-        .page-body h3 {
-            font-size: 1.2rem;
-            color: #f0c674;
-        }
-
-        .page-body h4 {
-            font-size: 1.05rem;
-            color: var(--accent-gold-bright);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .page-body ul,
-        .page-body ol {
+        .page-body ul, .page-body ol {
             margin-bottom: 1.2rem;
             padding-left: 1.75rem;
         }
@@ -650,7 +621,7 @@
             padding: 1rem 1.25rem;
             border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
             margin-bottom: 1.25rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
         .callout-title {
@@ -673,7 +644,7 @@
             margin: 1.5rem 0;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         table {
@@ -684,15 +655,13 @@
             text-align: left;
         }
 
-        th,
-        td {
+        th, td {
             padding: 0.75rem 1rem;
             border: 1px solid var(--border-color);
             color: var(--text-primary);
         }
 
-        thead tr,
-        tbody tr:first-child {
+        thead tr, tbody tr:first-child {
             background-color: var(--bg-tertiary);
             color: var(--accent-gold);
             font-family: var(--font-title);
@@ -700,7 +669,7 @@
         }
 
         tbody tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(255,255,255,0.02);
         }
 
         tbody tr:hover {
@@ -710,10 +679,7 @@
         /* Modal styling */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(5px);
             z-index: 1000;
@@ -807,23 +773,9 @@
             display: none;
         }
 
-        .status-alert.info {
-            background: var(--bg-tertiary);
-            color: var(--accent-gold-bright);
-            border: 1px solid var(--border-gold);
-        }
-
-        .status-alert.success {
-            background: rgba(46, 139, 87, 0.2);
-            color: #4ade80;
-            border: 1px solid #2e8b57;
-        }
-
-        .status-alert.error {
-            background: rgba(168, 50, 50, 0.2);
-            color: #f87171;
-            border: 1px solid #a83232;
-        }
+        .status-alert.info { background: var(--bg-tertiary); color: var(--accent-gold-bright); border: 1px solid var(--border-gold); }
+        .status-alert.success { background: rgba(46, 139, 87, 0.2); color: #4ade80; border: 1px solid #2e8b57; }
+        .status-alert.error { background: rgba(168, 50, 50, 0.2); color: #f87171; border: 1px solid #a83232; }
 
         .target-preview-badge {
             background: var(--bg-tertiary);
@@ -861,11 +813,7 @@
                 print-color-adjust: exact !important;
             }
 
-            #app-sidebar,
-            .topbar,
-            .permalink,
-            .dropzone-wrapper,
-            .modal-overlay {
+            #app-sidebar, .topbar, .permalink, .dropzone-wrapper, .modal-overlay {
                 display: none !important;
             }
 
@@ -891,7 +839,6 @@
         }
     </style>
 </head>
-
 <body>
 
     <!-- Top Navigation Header -->
@@ -901,29 +848,20 @@
             <span class="handbook-title-header">Karioz Handbook Compiler</span>
         </div>
         <div class="topbar-actions">
-            <button class="btn btn-secondary" id="btn-theme-toggle" onclick="toggleTheme()"
-                title="Cambiar Tema (Oscuro / Pergamino)">
-                <span>🎨 Tema</span>
+            <button class="btn btn-secondary" id="btn-theme-toggle" onclick="toggleTheme()" title="Cambiar a Modo Pergamino / Modo Oscuro">
+                <span>📜 Modo Pergamino</span>
             </button>
-            <button class="btn btn-secondary" id="btn-new-json" onclick="resetApp()" style="display:none;"
-                title="Cargar otros archivos JSON">
+            <button class="btn btn-secondary" id="btn-new-json" onclick="resetApp()" style="display:none;" title="Cargar otros archivos JSON">
                 <span>📁 Cargar JSON</span>
             </button>
-            <button class="btn btn-outline" id="btn-export-md" onclick="exportMarkdown()" disabled
-                title="Exportar como documento Markdown (.md)">
+            <button class="btn btn-outline" id="btn-export-md" onclick="exportMarkdown()" disabled title="Exportar como documento Markdown (.md)">
                 <span>📝 Exportar .MD</span>
             </button>
-            <button class="btn btn-primary" id="btn-export-html" onclick="exportHTML()" disabled
-                title="Descargar como Handbook HTML autónomo">
+            <button class="btn btn-primary" id="btn-export-html" onclick="exportHTML()" disabled title="Descargar como Handbook HTML autónomo">
                 <span>⚡ Descargar Handbook HTML</span>
             </button>
-            <button class="btn btn-success" id="btn-publish-gh" onclick="openPublishModal()" disabled
-                title="Publicar automáticamente el handbook a la Web">
+            <button class="btn btn-success" id="btn-publish-gh" onclick="openPublishModal()" disabled title="Publicar automáticamente el handbook a la Web">
                 <span>🚀 Publicar a la Web</span>
-            </button>
-            <button class="btn btn-secondary" id="btn-print-pdf" onclick="window.print()" disabled
-                title="Imprimir o guardar como PDF">
-                <span>🖨️ Imprimir / PDF</span>
             </button>
         </div>
     </header>
@@ -934,20 +872,17 @@
         <div class="dropzone-wrapper" id="dropzone-screen">
             <div class="dropzone-header">
                 <h1>Compilador de Manuales Karioz</h1>
-                <p>Arrastra los archivos JSON exportados desde Foundry VTT (ej. Reglas de Juego, Cualidades, Magia,
-                    Clases...) para visualizar y compilar el handbook en HTML o Markdown.</p>
+                <p>Arrastra los archivos JSON exportados desde Foundry VTT (ej. Reglas de Juego, Cualidades, Magia, Clases...) para visualizar y compilar el handbook en HTML o Markdown.</p>
             </div>
 
             <div class="drop-box" id="drop-box" onclick="document.getElementById('file-input').click()">
                 <span class="drop-icon">📜</span>
                 <div class="drop-title">Haz clic o arrastra tu archivo .json aquí</div>
                 <div class="drop-subtitle">Soporta fvtt-JournalEntry-*.json (individual o selección múltiple)</div>
-                <button class="btn btn-outline" type="button"
-                    onclick="event.stopPropagation(); document.getElementById('file-input').click();">
+                <button class="btn btn-outline" type="button" onclick="event.stopPropagation(); document.getElementById('file-input').click();">
                     🔍 Seleccionar Archivos JSON
                 </button>
-                <input type="file" id="file-input" class="file-input" accept=".json" multiple
-                    onchange="handleFileSelect(event)">
+                <input type="file" id="file-input" class="file-input" accept=".json" multiple onchange="handleFileSelect(event)">
             </div>
 
             <div id="loaded-summary" style="margin-top: 1.5rem; display: none;">
@@ -966,8 +901,7 @@
                     <div class="sidebar-subtitle">Manual de Reglas</div>
                     <div class="search-box">
                         <span class="search-icon">🔍</span>
-                        <input type="text" class="search-input" id="search-input" placeholder="Buscar regla o página..."
-                            oninput="filterNavigation()">
+                        <input type="text" class="search-input" id="search-input" placeholder="Buscar regla o página..." oninput="filterNavigation()">
                     </div>
                 </div>
                 <nav class="sidebar-nav" id="sidebar-nav">
@@ -996,56 +930,43 @@
             </div>
             <div class="modal-body">
                 <div class="target-preview-badge">
-                    📍 <strong>Destino:</strong> <span
-                        id="target-web-label">https://BladerX.github.io/karioz-handbook/</span>
+                    📍 <strong>Destino:</strong> <span id="target-web-label">https://BladerX.github.io/karioz-handbook/</span>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">🔑 Clave Secreta de Publicación</label>
-                    <input type="password" class="form-input" id="gh-passcode"
-                        placeholder="Ingresa la clave que te dio tu amigo...">
-                    <div class="form-help">La clave descifra en memoria tu Token de GitHub de forma 100% segura
-                        (AES-256).</div>
+                    <input type="password" class="form-input" id="gh-passcode" placeholder="Ingresa la clave que te dio tu amigo...">
+                    <div class="form-help">La clave descifra en memoria tu Token de GitHub de forma 100% segura (AES-256).</div>
                 </div>
 
                 <!-- Advanced Settings & Token Encryptor Accordion -->
                 <div style="margin-top: 1rem; text-align: left; display: flex; justify-content: space-between;">
-                    <a href="#" onclick="toggleAdvancedSettings(event)"
-                        style="font-size: 0.8rem; color: var(--text-muted); text-decoration: underline;">⚙️ Opciones
-                        avanzadas</a>
-                    <a href="#" onclick="toggleEncryptorBox(event)"
-                        style="font-size: 0.8rem; color: var(--accent-gold); text-decoration: underline;">🔐 Generador
-                        de Token Cifrado</a>
+                    <a href="#" onclick="toggleAdvancedSettings(event)" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: underline;">⚙️ Opciones avanzadas</a>
+                    <a href="#" onclick="toggleEncryptorBox(event)" style="font-size: 0.8rem; color: var(--accent-gold); text-decoration: underline;">🔐 Generador de Token Cifrado</a>
                 </div>
 
                 <!-- Encryptor Helper Tool (Only for the repository owner) -->
                 <div class="enc-box" id="encryptor-box" style="display: none;">
-                    <h4 style="font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 0.5rem;">🔐 Generar Token
-                        Cifrado con AES-256</h4>
+                    <h4 style="font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 0.5rem;">🔐 Generar Token Cifrado con AES-256</h4>
                     <div class="form-group">
                         <label class="form-label">Tu Token de GitHub (ghp_...)</label>
-                        <input type="password" class="form-input" id="enc-raw-token"
-                            placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+                        <input type="password" class="form-input" id="enc-raw-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
                     </div>
                     <div class="form-group">
                         <label class="form-label">Clave Secreta elegida para tu amigo</label>
                         <input type="text" class="form-input" id="enc-secret-pass" placeholder="ej: karioz123">
                     </div>
-                    <button class="btn btn-outline" onclick="generateEncryptedTokenFromUI()"
-                        style="width: 100%; justify-content: center;">
+                    <button class="btn btn-outline" onclick="generateEncryptedTokenFromUI()" style="width: 100%; justify-content: center;">
                         🔒 Cifrar Token Ahora
                     </button>
                     <div class="form-group" style="margin-top: 0.75rem;">
-                        <label class="form-label">Token Cifrado resultante (Pega este en
-                            CONFIG_PUBLICACION.encryptedToken):</label>
-                        <textarea class="form-input" id="enc-result-text" rows="3" readonly
-                            style="font-family: monospace; font-size: 0.75rem;"></textarea>
+                        <label class="form-label">Token Cifrado resultante (Pega este en CONFIG_PUBLICACION.encryptedToken):</label>
+                        <textarea class="form-input" id="enc-result-text" rows="3" readonly style="font-family: monospace; font-size: 0.75rem;"></textarea>
                     </div>
                 </div>
 
                 <!-- Advanced Settings Box -->
-                <div id="advanced-settings-box"
-                    style="display: none; margin-top: 1rem; border-top: 1px dashed var(--border-color); padding-top: 1rem;">
+                <div id="advanced-settings-box" style="display: none; margin-top: 1rem; border-top: 1px dashed var(--border-color); padding-top: 1rem;">
                     <div class="form-group">
                         <label class="form-label">Usuario / Organización de GitHub</label>
                         <input type="text" class="form-input" id="gh-owner">
@@ -1064,8 +985,7 @@
 
                 <div style="margin-top: 1.5rem; display: flex; justify-content: flex-end; gap: 0.75rem;">
                     <button class="btn btn-secondary" onclick="closePublishModal()">Cancelar</button>
-                    <button class="btn btn-success" id="btn-do-publish" onclick="publishToGitHub()">🚀 Publicar
-                        Ahora</button>
+                    <button class="btn btn-success" id="btn-do-publish" onclick="publishToGitHub()">🚀 Publicar Ahora</button>
                 </div>
             </div>
         </div>
@@ -1076,12 +996,12 @@
         // CONFIGURACIÓN POR DEFECTO CON TOKEN CIFRADO SEGURA (AES-256-GCM)
         // =========================================================================
         const CONFIG_PUBLICACION = {
-            owner: "BladerKholin",                   // Tu usuario de GitHub
+            owner: "BladerX",                   // Tu usuario de GitHub
             repo: "karioz-handbook",             // Nombre de tu repositorio
             path: "index.html",                  // Archivo que se actualizará en GitHub Pages
-
+            
             // Pega aquí el Token Cifrado generado con la herramienta integrada
-            encryptedToken: "u/rPJI9/Y+cNNOggYffjqP30Vny9tKhqcVPD1vX06jgmpiarzpJwcgg9T/Z4DNNV40O0ssSTiWIwtJvLzKxQrD94trYRRW56ONH1YhRhuLLPHPp//CRF6uq/VmL0jW42RNrPWFzvTjk1GPhvtPjm3N552wer62wC7QCMSs1oya0BWjqXOIAEsuI="                  // String cifrado (ej: "U2FsdGVkX1...")
+            encryptedToken: ""                  // String cifrado (ej: "U2FsdGVkX1...")
         };
         // =========================================================================
 
@@ -1148,13 +1068,13 @@
 
         function processPageContent(content) {
             if (!content) return "";
-
+            
             // Format callout cards for strong+em headers in paragraphs
             let processed = content.replace(
                 /<p>(?:<em><strong>|<strong><em>)(.*?)(?:<\/em><\/strong>|<\/strong><\/em>)(.*?)<\/p>/gi,
                 '<div class="callout-card"><span class="callout-title">$1</span><div class="callout-desc">$2</div></div>'
             );
-
+            
             // Wrap tables in responsive wrapper
             processed = processed.replace(
                 /(<table>[\s\S]*?<\/table>)/gi,
@@ -1166,7 +1086,7 @@
 
         function processFileList(files) {
             const jsonFiles = Array.from(files).filter(f => f.name.endsWith('.json') || f.type === 'application/json');
-
+            
             if (jsonFiles.length === 0) {
                 alert('Por favor selecciona o droppea archivos en formato .json válidos de Foundry VTT.');
                 return;
@@ -1234,7 +1154,7 @@
                 "Reglas de Juego", "Cualidades", "Tipos de Ataques", "Magia",
                 "Clases", "Reclutamiento", "Miembros de Dunavar", "Orden de Cartílago"
             ];
-
+            
             loadedChapters.sort((a, b) => {
                 let idxA = standardOrder.indexOf(a.title);
                 let idxB = standardOrder.indexOf(b.title);
@@ -1316,7 +1236,6 @@
             document.getElementById('btn-export-md').disabled = false;
             document.getElementById('btn-export-html').disabled = false;
             document.getElementById('btn-publish-gh').disabled = false;
-            document.getElementById('btn-print-pdf').disabled = false;
 
             // Intersection Observer for scroll spy in sidebar
             setupScrollSpy();
@@ -1404,7 +1323,6 @@
             document.getElementById('btn-export-md').disabled = true;
             document.getElementById('btn-export-html').disabled = true;
             document.getElementById('btn-publish-gh').disabled = true;
-            document.getElementById('btn-print-pdf').disabled = true;
             document.getElementById('file-input').value = '';
         }
 
@@ -1429,16 +1347,36 @@
     </style>
 </head>
 <body>
+    <!-- Top Navigation Header -->
+    <header class="topbar">
+        <div class="topbar-branding">
+            <span class="brand-icon">⚔️</span>
+            <span class="handbook-title-header">Karioz Handbook</span>
+        </div>
+        <div class="topbar-actions">
+            <button class="btn btn-secondary" onclick="toggleTheme()" title="Cambiar a Modo Pergamino / Modo Oscuro">
+                <span>📜 Modo Pergamino</span>
+            </button>
+        </div>
+    </header>
+
     <div class="app-layout">
         <div class="workspace-view active">
             <aside id="app-sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-brand">KARIOZ HANDBOOK</div>
                     <div class="sidebar-subtitle">Manual de Reglas</div>
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="search-input" placeholder="Buscar regla o página..." oninput="filterNavigation()">
+                    </div>
                 </div>
-                <nav class="sidebar-nav">
+                <nav class="sidebar-nav" id="sidebar-nav">
                     ${sidebarNav}
                 </nav>
+                <div class="sidebar-footer">
+                    <span>Karioz TTRPG System &bull; Handbook</span>
+                </div>
             </aside>
             <main id="app-main">
                 <div class="content-container">
@@ -1452,11 +1390,76 @@
             const grp = document.querySelector('.nav-chapter-group[data-chapter-id="' + id + '"]');
             if (grp) grp.classList.toggle('collapsed');
         }
+
         function onNavClick(e, id) {
             e.preventDefault();
             const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+                history.pushState(null, null, '#' + id);
+            }
         }
+
+        function filterNavigation() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const pageLinks = document.querySelectorAll('.nav-page-item');
+            const chapterGroups = document.querySelectorAll('.nav-chapter-group');
+
+            pageLinks.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            chapterGroups.forEach(group => {
+                const visiblePages = group.querySelectorAll('.nav-page-item[style="display: block;"]');
+                if (visiblePages.length > 0 || query === '') {
+                    group.style.display = 'block';
+                    if (query !== '') {
+                        group.classList.remove('collapsed');
+                    }
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-theme') === 'parchment') {
+                body.removeAttribute('data-theme');
+            } else {
+                body.setAttribute('data-theme', 'parchment');
+            }
+        }
+
+        function setupScrollSpy() {
+            const articles = document.querySelectorAll('.page-article');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('data-page-id') === id) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            articles.forEach(article => observer.observe(article));
+        }
+
+        document.addEventListener('DOMContentLoaded', setupScrollSpy);
+        setupScrollSpy();
     <\/script>
 </body>
 </html>`;
@@ -1588,7 +1591,7 @@
             const salt = crypto.getRandomValues(new Uint8Array(16));
             const iv = crypto.getRandomValues(new Uint8Array(12));
             const key = await deriveKey(password, salt);
-
+            
             const encryptedBuffer = await crypto.subtle.encrypt(
                 { name: "AES-GCM", iv: iv },
                 key,
@@ -1784,5 +1787,4 @@
         }
     </script>
 </body>
-
 </html>
